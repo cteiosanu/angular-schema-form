@@ -212,3 +212,26 @@ schemaFormDecoratorsProvider.createDecorator('bootstrapDecorator', {
 
 When the decorator is trying to match a form type against a tempate it first executes all the rules
 in order. If one returns that is used as template, otherwise it checks the mappings.
+
+For example to add a new template (in a similar manner you can map an existing type to a new template):
+
+- Create your template
+```html
+<div class="form-group has-feedback" ng-class="{'has-error': hasError(), 'has-success': hasSuccess()}">
+    <label ng-show="showTitle()">{{form.title}}</label>
+    <span class="help-block">{{ (hasError() && errorMessage(schemaError())) || form.description}}</span>
+    <textarea class="form-control"
+                        ckeditor
+                        sf-changed="form"
+                        ng-required="form.required"
+                        ng-model="$$value$$"
+                        schema-validate="form.schema"></textarea>
+</div>
+```
+- Use the addMapping provider method in your app boostraping section:
+
+```javascript
+.config(['schemaFormDecoratorsProvider', function(decoratorsProvider){
+    decoratorsProvider.addMapping('bootstrapDecorator', 'ckeditor', 'path/to/ckeditor.html');
+}])
+```
